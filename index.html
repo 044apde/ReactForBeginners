@@ -8,25 +8,103 @@
 	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 	<script type="text/babel">
-		function App() {
-			const [minutes, setMinutes] = React.useState();
+		function MinutesToHours() {
+			const [amount, setAmount] = React.useState(0);
+			const [inveted, setInverted] = React.useState(false);
 			const onChange = () => {
-				setMinutes(event.target.value);
+				setAmount(event.target.value);
+			};
+			const reset = () => setAmount(0);
+			const onFlip = () => {
+				reset();
+				setInverted((current) => !current);
 			};
 			return (
 				<div>
-					<h1 className="hi">Super Converter</h1>
-          <h4>You want to convert {minutes}</h4>
-					<label htmlFor="minutes"> Minutes </label>
-					<input
-						value={minutes}
-						id="minutes"
-						type="number"
-						placeholder="Minutes"
-						onChange={onChange}
-					/>
-					<label htmlFor="hours"> Hours</label>
-					<input id="hours" type="number" placeholder="Hours" />
+					<div>
+						<label htmlFor="minutes"> Minutes </label>
+						<input
+							value={inveted ? amount * 60 : amount}
+							id="minutes"
+							type="number"
+							placeholder="Minutes"
+							onChange={onChange}
+							disabled={inveted}
+						/>
+					</div>
+					<div>
+						<label htmlFor="hours"> Hours</label>
+						<input
+							value={inveted ? amount : Math.round(amount / 60)}
+							id="hours"
+							type="number"
+							placeholder="Hours"
+							onChange={onChange}
+							disabled={!inveted}
+						/>
+					</div>
+					<button onClick={reset}> Reset </button>
+					<button onClick={onFlip}> inveted </button>
+				</div>
+			);
+		}
+		function KmToMiles() {
+			const [amount, setAmount] = React.useState(0);
+			const [inveted, setInverted] = React.useState(false);
+			const onChange = () => {
+				setAmount(event.target.value);
+			};
+			const reset = () => setAmount(0);
+			const onFlip = () => {
+				reset();
+				setInverted((current) => !current);
+			};
+			return (
+				<div>
+					<div>
+						<label htmlFor="Km"> Km </label>
+						<input
+							value={inveted ? amount * 1.609 : amount}
+							id="Km"
+							type="number"
+							placeholder="Km"
+							onChange={onChange}
+							disabled={inveted}
+						/>
+					</div>
+					<div>
+						<label htmlFor="miles"> Miles</label>
+						<input
+							value={inveted ? amount : amount / 1.609}
+							id="miles"
+							type="number"
+							placeholder="Hours"
+							onChange={onChange}
+							disabled={!inveted}
+						/>
+					</div>
+					<button onClick={reset}> Reset </button>
+					<button onClick={onFlip}> inveted </button>
+				</div>
+			);
+		}
+		function App() {
+			const [index, setIndex] = React.useState("xx");
+			const onSelect = (event) => {
+				setIndex(event.target.value);
+			};
+			return (
+				<div>
+					<h1>Super Converter</h1>
+					<select value={index} onChange={onSelect}>
+						<option value="xx">Select your units</option>
+						<option value="0">Minutes & Hours</option>
+						<option value="1">Km & Miles</option>
+					</select>
+					<hr />
+					{index == "xx" ? "Please select your units" : null}
+					{index == "0" ? <MinutesToHours /> : null}
+					{index == "1" ? <KmToMiles /> : null}
 				</div>
 			);
 		}
